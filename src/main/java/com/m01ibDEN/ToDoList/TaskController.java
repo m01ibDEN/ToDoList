@@ -5,6 +5,7 @@ import com.m01ibDEN.ToDoList.repos.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +25,7 @@ public class TaskController {
         return "main";
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public String add(@RequestParam("name") String name, @RequestParam("text") String text, Map<String, Object> model) {
         Task task = new Task(name, text);
 
@@ -34,6 +35,14 @@ public class TaskController {
 
         model.put("tasks", tasks);
 
-        return "main";
+        return "redirect:/";
     }
+
+    @PostMapping("/remove/{id}")
+    public String remove(@PathVariable("id") Integer id, Map<String, Object> model) {
+        taskRepo.deleteById(id);
+
+        return "redirect:/";
+    }
+
 }
